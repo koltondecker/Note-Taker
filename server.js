@@ -47,5 +47,25 @@ app.post('/api/notes', (req, res) => {
     res.send(newNote);
 });
 
+
+app.delete('/api/notes/:id', (req, res) => {
+    const reqId = req.params.id;
+
+    for (let note of db) {
+        if(reqId === note.id) {
+
+            db.splice(db.indexOf(note), 1);
+
+            fs.writeFile('./db/db.json', JSON.stringify(db), (err) => {
+
+                if (err) throw err;
+                console.log("Note has been deleted!");
+        
+            });
+        }
+    }
+    res.end();
+});
+
 // Starts server to begin listening. 
 app.listen(PORT, () => console.log(`App listening on PORT ${PORT}`));
